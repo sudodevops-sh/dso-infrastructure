@@ -1,28 +1,24 @@
 #!/usr/bin/env python3
 import os
-
+import yaml
 import aws_cdk as cdk
 
-from cdk_ops.cdk_ops_stack import CdkOpsStack
-
+from cdk_ops.stacks import ArtifactBucketStack
 
 app = cdk.App()
-CdkOpsStack(app, "CdkOpsStack",
-    # If you don't specify 'env', this stack will be environment-agnostic.
-    # Account/Region-dependent features and context lookups will not work,
-    # but a single synthesized template can be deployed anywhere.
 
-    # Uncomment the next line to specialize this stack for the AWS Account
-    # and Region that are implied by the current CLI configuration.
+env = app.node.try_get_context("env")
+if env is None:
+    raise ValueError("Please specify an environment using -c env=<dev|prod>")
 
-    #env=cdk.Environment(account=os.getenv('CDK_DEFAULT_ACCOUNT'), region=os.getenv('CDK_DEFAULT_REGION')),
+config_path = os.path.join("configs", f"ops-{env}.yaml")
+with open(config_path, "r") as f:
+    config = yaml.safe_load(f)
 
-    # Uncomment the next line if you know exactly what Account and Region you
-    # want to deploy the stack to. */
-
-    #env=cdk.Environment(account='123456789012', region='us-east-1'),
-
-    # For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html
-    )
+stack_name = f"{env}-stack"
+env=cdk.Environment(account=config["ops"]["aws_account"],region=config["ops"]["aws_region"])
+ArtifactBucketStack(app, stack_name,
+                    config=config,
+                    env=env)
 
 app.synth()

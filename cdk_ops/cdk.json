@@ -1,5 +1,6 @@
 {
   "app": "python3 app.py",
+  "versionReporting": false,
   "watch": {
     "include": [
       "**"
@@ -11,7 +12,8 @@
       "source.bat",
       "**/__init__.py",
       "**/__pycache__",
-      "tests"
+      "tests",
+      ".venv"
     ]
   },
   "context": {
