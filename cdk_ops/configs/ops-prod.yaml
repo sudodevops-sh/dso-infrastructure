@@ -1,23 +1,20 @@
 ops:
   env: prod
-  aws_account: "123456789012"
+  aws_account: "618360038362"
   aws_region: us-east-1
 resources:
   s3:
     bucket_name: my-artifact-bucket-prod
-    versioned: True
+    versioned: true
     removal_policy: RETAIN
   vpc:
     cidr: 10.56.10.0/24
     max_azs: 2
-    nat_gateways: 1
+    nat_gateways: 2
     subnets:
       public:
         enabled: true
         cidr_mask: 27
       private:
-        enabled: true
-        cidr_mask: 27
-      private_isolated:
         enabled: true
         cidr_mask: 27

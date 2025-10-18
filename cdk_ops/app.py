@@ -3,7 +3,7 @@ import os
 import yaml
 import aws_cdk as cdk
 
-from cdk_ops.stacks import ArtifactBucketStack
+from cdk_ops.stacks import ArtifactBucketStack, VpcStack
 
 app = cdk.App()
 
@@ -17,8 +17,12 @@ with open(config_path, "r") as f:
 
 stack_name = f"{env}-stack"
 env=cdk.Environment(account=config["ops"]["aws_account"],region=config["ops"]["aws_region"])
-ArtifactBucketStack(app, stack_name,
+ArtifactBucketStack(app, f"{stack_name}-artifact-bucket",
                     config=config,
                     env=env)
+
+VpcStack(app, f"{stack_name}-vpc",
+         config=config,
+         env=env)
 
 app.synth()

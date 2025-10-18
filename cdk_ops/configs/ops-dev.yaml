@@ -1,6 +1,6 @@
 ops:
   env: dev
-  aws_account: "123456789012"
+  aws_account: "618360038362"
   aws_region: us-east-1
 resources:
   s3:
@@ -17,5 +17,3 @@ resources:
       private:
         enabled: true
         cidr_mask: 27
-      private_isolated:
-        enabled: false
